@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -67,6 +68,10 @@ public class RoadmapStepServiceImpl implements RoadmapStepService {
 
         try {
             RoadmapStep.StepStatus newStatus = RoadmapStep.StepStatus.valueOf(statusDto.getStatus());
+
+            if (newStatus == RoadmapStep.StepStatus.IN_PROGRESS && step.getStatus() == RoadmapStep.StepStatus.IN_PROGRESS) {
+                step.setStartedAt(LocalDateTime.now());
+            }
             step.setStatus(newStatus);
         } catch (IllegalArgumentException e) {
             throw new RuntimeException("Invalid status value: " + statusDto.getStatus());

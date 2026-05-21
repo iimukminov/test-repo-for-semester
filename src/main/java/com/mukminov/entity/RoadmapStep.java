@@ -3,6 +3,7 @@ package com.mukminov.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -44,6 +45,9 @@ public class RoadmapStep {
 
     @OneToOne(mappedBy = "roadmapStep", cascade = CascadeType.ALL)
     private ReviewFeedback reviewFeedback;
+
+    @Column(name = "started_at")
+    private LocalDateTime startedAt;
 
     public enum StepStatus {
         LOCKED, IN_PROGRESS, REVIEW, DONE

@@ -4,6 +4,8 @@ import com.mukminov.api.generated.dto.RoadmapStepDto;
 import com.mukminov.entity.RoadmapStep;
 import org.springframework.stereotype.Component;
 
+import java.time.ZoneOffset;
+
 @Component
 public class RoadmapStepMapper {
 
@@ -30,6 +32,10 @@ public class RoadmapStepMapper {
         
         if (entity.getRoadmap() != null) {
             dto.setRoadmapId(entity.getRoadmap().getId());
+        }
+
+        if (entity.getStartedAt() != null) {
+            dto.setStartedAt(entity.getStartedAt().atOffset(ZoneOffset.UTC));
         }
 
         return dto;
