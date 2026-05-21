@@ -11,7 +11,6 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class RoadmapStep {
 
@@ -21,7 +20,6 @@ public class RoadmapStep {
 
     @EqualsAndHashCode.Include
     @Column(updatable = false, nullable = false, unique = true)
-    @Builder.Default
     private UUID uuid = UUID.randomUUID();
 
     @Column(name = "step_order", nullable = false)
@@ -49,5 +47,15 @@ public class RoadmapStep {
 
     public enum StepStatus {
         LOCKED, IN_PROGRESS, REVIEW, DONE
+    }
+
+    @Builder
+    public RoadmapStep(Integer stepOrder, String title, String contentLink, Integer requiredCommits, StepStatus status, Roadmap roadmap) {
+        this.stepOrder = stepOrder;
+        this.title = title;
+        this.contentLink = contentLink;
+        this.requiredCommits = requiredCommits;
+        this.status = status;
+        this.roadmap = roadmap;
     }
 }

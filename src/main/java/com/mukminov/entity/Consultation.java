@@ -12,7 +12,6 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Consultation {
 
@@ -22,7 +21,6 @@ public class Consultation {
 
     @EqualsAndHashCode.Include
     @Column(updatable = false, nullable = false, unique = true)
-    @Builder.Default
     private UUID uuid = UUID.randomUUID();
 
     @Column(name = "scheduled_time", nullable = false)
@@ -45,5 +43,14 @@ public class Consultation {
 
     public enum ConsultationStatus {
         SCHEDULED, COMPLETED, CANCELLED
+    }
+
+    @Builder
+    public Consultation(LocalDateTime scheduledTime, String meetLink, ConsultationStatus status, User mentor, User mentee) {
+        this.scheduledTime = scheduledTime;
+        this.meetLink = meetLink;
+        this.status = status;
+        this.mentor = mentor;
+        this.mentee = mentee;
     }
 }

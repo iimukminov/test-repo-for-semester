@@ -12,7 +12,6 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Role {
 
@@ -26,4 +25,9 @@ public class Role {
 
     @ManyToMany(mappedBy = "roles")
     private Set<User> users = new HashSet<>();
+
+    @Builder
+    public Role(String name) {
+        this.name = name;
+    }
 }

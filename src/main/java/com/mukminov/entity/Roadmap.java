@@ -15,7 +15,6 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Roadmap {
 
@@ -25,7 +24,6 @@ public class Roadmap {
 
     @EqualsAndHashCode.Include
     @Column(updatable = false, nullable = false, unique = true)
-    @Builder.Default
     private UUID uuid = UUID.randomUUID();
 
     @Column(nullable = false)
@@ -48,4 +46,12 @@ public class Roadmap {
 
     @OneToMany(mappedBy = "roadmap", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RoadmapStep> steps = new ArrayList<>();
+
+    @Builder
+    public Roadmap(String title, String description, User mentor, User mentee) {
+        this.title = title;
+        this.description = description;
+        this.mentor = mentor;
+        this.mentee = mentee;
+    }
 }

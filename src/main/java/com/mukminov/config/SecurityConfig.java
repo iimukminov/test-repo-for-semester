@@ -50,11 +50,4 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return web -> web.debug(true)
-                .ignoring()
-                .requestMatchers("/css/**", "/templates/**", "/images/**", "/js/**", "favicon.ico");
-    }
 }

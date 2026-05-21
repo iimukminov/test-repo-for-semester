@@ -13,7 +13,6 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class ReviewFeedback {
 
@@ -23,7 +22,6 @@ public class ReviewFeedback {
 
     @EqualsAndHashCode.Include
     @Column(updatable = false, nullable = false, unique = true)
-    @Builder.Default
     private UUID uuid = UUID.randomUUID();
 
     @Column(columnDefinition = "TEXT")
@@ -43,4 +41,12 @@ public class ReviewFeedback {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mentor_id", nullable = false)
     private User mentor;
+
+    @Builder
+    public ReviewFeedback(String comments, Boolean isApproved, RoadmapStep roadmapStep, User mentor) {
+        this.comments = comments;
+        this.isApproved = isApproved;
+        this.roadmapStep = roadmapStep;
+        this.mentor = mentor;
+    }
 }

@@ -28,7 +28,6 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class User {
 
@@ -46,7 +45,7 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(name = "github_username")
+    @Column(name = "github_username", unique = true)
     private String githubUsername;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -62,4 +61,12 @@ public class User {
 
     @OneToMany(mappedBy = "mentee")
     private Set<Roadmap> assignedRoadmaps = new HashSet<>();
+
+    @Builder
+    public User(String username, String password, String email, String githubUsername) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.githubUsername = githubUsername;
+    }
 }
