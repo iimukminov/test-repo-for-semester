@@ -26,3 +26,8 @@ app:
   redis:
     cache:
       ttl-minutes: 10m
+  github:
+    client:
+      connect-timeout: 10s
+      read-timeout: 10s
+      sync-interval: 60s
