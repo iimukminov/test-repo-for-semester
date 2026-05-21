@@ -25,4 +25,4 @@ spring:
 app:
   redis:
     cache:
-      ttl-minutes: 10
+      ttl-minutes: 10m
