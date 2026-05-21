@@ -22,8 +22,9 @@ repositories {
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.postgresql:postgresql")
-//    implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-freemarker")
 //    implementation("org.liquibase:liquibase-core")
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")

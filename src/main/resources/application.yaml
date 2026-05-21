@@ -2,6 +2,12 @@ spring:
   application:
     name: semester-work-spring-iimukminov
 
+  freemarker:
+    template-loader-path: classpath:/templates/
+    suffix: .ftl
+    cache: false
+    charset: UTF-8
+
   datasource:
     url: ${POSTGRES_URL}
     username: ${POSTGRES_USER}
