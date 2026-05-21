@@ -1,13 +1,13 @@
 package com.mukminov.service;
 
+import com.mukminov.api.generated.dto.RoadmapDto;
 import com.mukminov.entity.Roadmap;
 
 import java.util.List;
 
 public interface RoadmapService {
-    Roadmap createRoadmap(Long mentorId, Long menteeId, String title, String description);
-    Roadmap getRoadmapById(Long id);
-    List<Roadmap> getRoadmapsByMenteeId(Long menteeId);
-    List<Roadmap> getRoadmapsByMentorId(Long mentorId);
+    RoadmapDto createRoadmap(Long mentorId, Long menteeId, String title, String description);
+    RoadmapDto getRoadmapById(Long id);
+    List<RoadmapDto> getRoadmaps(Long mentorId, Long menteeId);
     void deleteRoadmap(Long id);
 }

@@ -1,7 +1,9 @@
 package com.mukminov.service.impl;
 
+import com.mukminov.api.generated.dto.RoadmapDto;
 import com.mukminov.entity.Roadmap;
 import com.mukminov.entity.User;
+import com.mukminov.mapper.RoadmapMapper;
 import com.mukminov.repository.RoadmapRepository;
 import com.mukminov.repository.UserRepository;
 import com.mukminov.service.RoadmapService;
@@ -17,10 +19,11 @@ public class RoadmapServiceImpl implements RoadmapService {
 
     private final RoadmapRepository roadmapRepository;
     private final UserRepository userRepository;
+    private final RoadmapMapper roadmapMapper;
 
     @Override
     @Transactional
-    public Roadmap createRoadmap(Long mentorId, Long menteeId, String title, String description) {
+    public RoadmapDto createRoadmap(Long mentorId, Long menteeId, String title, String description) {
         User mentor = userRepository.findById(mentorId)
                 .orElseThrow(() -> new RuntimeException("Mentor not found"));
         
@@ -34,27 +37,35 @@ public class RoadmapServiceImpl implements RoadmapService {
                 .mentee(mentee)
                 .build();
 
-        return roadmapRepository.save(roadmap);
+        Roadmap savedRoadmap = roadmapRepository.save(roadmap);
+        return roadmapMapper.toDto(savedRoadmap);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Roadmap getRoadmapById(Long id) {
-        return roadmapRepository.findById(id)
+    public RoadmapDto getRoadmapById(Long id) {
+        Roadmap roadmap = roadmapRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Roadmap not found"));
+        return roadmapMapper.toDto(roadmap);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Roadmap> getRoadmapsByMenteeId(Long menteeId) {
-        return roadmapRepository.findAllByMenteeId(menteeId);
+    public List<RoadmapDto> getRoadmaps(Long mentorId, Long menteeId) {
+        List<Roadmap> roadmaps;
+        if (mentorId != null) {
+            roadmaps = roadmapRepository.findAllByMentorId(mentorId);
+        } else if (menteeId != null) {
+            roadmaps = roadmapRepository.findAllByMenteeId(menteeId);
+        } else {
+            roadmaps = roadmapRepository.findAll();
+        }
+
+        return roadmaps.stream()
+                .map(roadmapMapper::toDto)
+                .toList();
     }
 
-    @Override
-    @Transactional(readOnly = true)
-    public List<Roadmap> getRoadmapsByMentorId(Long mentorId) {
-        return roadmapRepository.findAllByMentorId(mentorId);
-    }
 
     @Override
     @Transactional

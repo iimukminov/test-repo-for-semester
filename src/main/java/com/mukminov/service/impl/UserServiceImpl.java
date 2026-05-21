@@ -4,6 +4,7 @@ import com.mukminov.api.generated.dto.UserCreateDto;
 import com.mukminov.api.generated.dto.UserDto;
 import com.mukminov.entity.Role;
 import com.mukminov.entity.User;
+import com.mukminov.mapper.UserMapper;
 import com.mukminov.repository.RoleRepository;
 import com.mukminov.repository.UserRepository;
 import com.mukminov.service.UserService;
@@ -23,12 +24,13 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UserMapper userMapper;
 
     @Override
     @Transactional(readOnly = true)
     public List<UserDto> getAllUsers() {
         return userRepository.findAll().stream()
-                .map(this::mapToDto)
+                .map(userMapper::toDto)
                 .collect(Collectors.toList());
     }
 
@@ -36,8 +38,8 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     public UserDto getUserById(Long id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
-        return mapToDto(user);
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        return userMapper.toDto(user);
     }
 
     @Override
@@ -56,21 +58,12 @@ public class UserServiceImpl implements UserService {
         user.getRoles().add(menteeRole);
 
         User savedUser = userRepository.save(user);
-        return mapToDto(savedUser);
+        return userMapper.toDto(savedUser);
     }
 
     @Override
     @Transactional
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
-    }
-
-    private UserDto mapToDto(User user) {
-        UserDto dto = new UserDto();
-        dto.setId(user.getId());
-        dto.setUsername(user.getUsername());
-        dto.setEmail(user.getEmail());
-        dto.setGithubUsername(user.getGithubUsername());
-        return dto;
     }
 }
