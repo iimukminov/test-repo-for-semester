@@ -1,5 +1,6 @@
 package com.mukminov.service.impl;
 
+import com.mukminov.api.generated.dto.RoadmapCreateDto;
 import com.mukminov.api.generated.dto.RoadmapDto;
 import com.mukminov.entity.Roadmap;
 import com.mukminov.entity.User;
@@ -23,16 +24,16 @@ public class RoadmapServiceImpl implements RoadmapService {
 
     @Override
     @Transactional
-    public RoadmapDto createRoadmap(Long mentorId, Long menteeId, String title, String description) {
-        User mentor = userRepository.findById(mentorId)
+    public RoadmapDto createRoadmap(RoadmapCreateDto createDto) {
+        User mentor = userRepository.findById(createDto.getMentorId())
                 .orElseThrow(() -> new RuntimeException("Mentor not found"));
-        
-        User mentee = userRepository.findById(menteeId)
+
+        User mentee = userRepository.findById(createDto.getMenteeId())
                 .orElseThrow(() -> new RuntimeException("Mentee not found"));
 
         Roadmap roadmap = Roadmap.builder()
-                .title(title)
-                .description(description)
+                .title(createDto.getTitle())
+                .description(createDto.getDescription())
                 .mentor(mentor)
                 .mentee(mentee)
                 .build();

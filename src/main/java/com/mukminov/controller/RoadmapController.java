@@ -19,12 +19,7 @@ public class RoadmapController implements RoadmapsApi {
 
     @Override
     public ResponseEntity<RoadmapDto> createRoadmap(RoadmapCreateDto roadmapCreateDto) {
-        RoadmapDto created = roadmapService.createRoadmap(
-                roadmapCreateDto.getMentorId(),
-                roadmapCreateDto.getMenteeId(),
-                roadmapCreateDto.getTitle(),
-                roadmapCreateDto.getDescription()
-        );
+        RoadmapDto created = roadmapService.createRoadmap(roadmapCreateDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
