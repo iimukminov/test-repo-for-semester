@@ -26,4 +26,7 @@ public class GitHubClientProperties {
     @NotNull
     @DurationMin(seconds = 10)
     private Duration syncInterval = Duration.ofSeconds(60);
+
+    @NotNull
+    private String token;
 }

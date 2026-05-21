@@ -2,11 +2,13 @@ package com.mukminov.client;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mukminov.properties.GitHubClientProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -18,7 +20,9 @@ public class GitHubClient {
 
     private final OkHttpClient okHttpClient;
     private final ObjectMapper objectMapper;
+    private final GitHubClientProperties properties;
 
+    @Cacheable(value = "githubCommits", key = "#owner + ':' + #repo + ':' + #githubUsername")
     public int getCommitsCount(String owner, String repo, String githubUsername, String sinceIso) {
         String url = String.format("https://api.github.com/repos/%s/%s/commits?since=%s&author=%s",
                 owner, repo, sinceIso, githubUsername);
@@ -29,6 +33,7 @@ public class GitHubClient {
                 .url(url)
                 .header("Accept", "application/vnd.github+json")
                 .header("User-Agent", "MentorFlow-App")
+                .header("Authorization", "Bearer " + properties.getToken())
                 .build();
 
         try (Response response = okHttpClient.newCall(request).execute()) {
