@@ -379,6 +379,54 @@ paths:
         '204':
           description: Consultation successfully deleted
 
+  /steps/{stepId}/feedback:
+    get:
+      tags:
+        - Review Feedback
+      summary: Get feedback for a specific roadmap step
+      operationId: getFeedbackByStepId
+      parameters:
+        - name: stepId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReviewFeedbackDto'
+        '404':
+          description: Feedback not found
+    post:
+      tags:
+        - Review Feedback
+      summary: Add or update feedback for a roadmap step
+      operationId: addFeedbackToStep
+      parameters:
+        - name: stepId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReviewFeedbackCreateDto'
+      responses:
+        '201':
+          description: Feedback created/updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReviewFeedbackDto'
+
 
 components:
   schemas:
@@ -557,3 +605,43 @@ components:
           description: "Enum: SCHEDULED, COMPLETED, CANCELLED"
         meetLink:
           type: string
+
+    ReviewFeedbackDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        uuid:
+          type: string
+          format: uuid
+        comments:
+          type: string
+        isApproved:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        roadmapStepId:
+          type: integer
+          format: int64
+        mentorId:
+          type: integer
+          format: int64
+        mentorUsername:
+          type: string
+
+    ReviewFeedbackCreateDto:
+      type: object
+      required:
+        - comments
+        - isApproved
+        - mentorId
+      properties:
+        comments:
+          type: string
+        isApproved:
+          type: boolean
+        mentorId:
+          type: integer
+          format: int64
