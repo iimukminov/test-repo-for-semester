@@ -21,3 +21,8 @@ spring:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
+
+app:
+  redis:
+    cache:
+      ttl-minutes: 10
