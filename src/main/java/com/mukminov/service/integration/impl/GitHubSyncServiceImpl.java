@@ -1,8 +1,10 @@
 package com.mukminov.service.integration.impl;
 
+import com.mukminov.api.generated.dto.RoadmapStepDto;
 import com.mukminov.client.GitHubClient;
 import com.mukminov.entity.Consultation;
 import com.mukminov.entity.RoadmapStep;
+import com.mukminov.mapper.RoadmapStepMapper;
 import com.mukminov.repository.ConsultationRepository;
 import com.mukminov.repository.RoadmapStepRepository;
 import com.mukminov.service.integration.GitHubSyncService;
@@ -23,6 +25,7 @@ public class GitHubSyncServiceImpl implements GitHubSyncService {
 
     private final RoadmapStepRepository stepRepository;
     private final ConsultationRepository consultationRepository;
+    private final RoadmapStepMapper stepMapper;
     private final GitHubClient gitHubClient;
 
     @Override
@@ -39,6 +42,17 @@ public class GitHubSyncServiceImpl implements GitHubSyncService {
         for (RoadmapStep step : activeSteps) {
             processStep(step);
         }
+    }
+
+    @Override
+    public RoadmapStepDto syncSingleStep(Long stepId) {
+        RoadmapStep step = stepRepository.findById(stepId)
+                .orElseThrow(() -> new RuntimeException("Шаг не найден"));
+
+        if (step.getStatus() == RoadmapStep.StepStatus.IN_PROGRESS) {
+            processStep(step);
+        }
+        return stepMapper.toDto(step);
     }
 
     private void processStep(RoadmapStep step) {
@@ -61,10 +75,11 @@ public class GitHubSyncServiceImpl implements GitHubSyncService {
 
         log.info("Step ID: {} | Required: {} | Found: {}", step.getId(), step.getRequiredCommits(), actualCommits);
 
+        step.setActualCommits(actualCommits);
+
         if (actualCommits >= step.getRequiredCommits()) {
             log.info("Step ID: {} completed required commits. Moving to REVIEW.", step.getId());
             step.setStatus(RoadmapStep.StepStatus.REVIEW);
-            stepRepository.save(step);
         } else {
             int maxAfkDays = step.getRoadmap().getMaxAfkDays() != null ? step.getRoadmap().getMaxAfkDays() : 5;
             String meetLink = step.getRoadmap().getMeetLink() != null ? step.getRoadmap().getMeetLink() : "https://meet.google.com/new";
@@ -90,5 +105,7 @@ public class GitHubSyncServiceImpl implements GitHubSyncService {
                 }
             }
         }
+
+        stepRepository.save(step);
     }
 }

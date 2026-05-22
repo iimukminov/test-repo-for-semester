@@ -30,12 +30,21 @@ public class RoadmapStepServiceImpl implements RoadmapStepService {
         Roadmap roadmap = roadmapRepository.findById(roadmapId)
                 .orElseThrow(() -> new RuntimeException("Roadmap not found"));
 
+        RoadmapStep.StepStatus initialStatus = (createDto.getStepOrder() == 1)
+                ? RoadmapStep.StepStatus.IN_PROGRESS
+                : RoadmapStep.StepStatus.LOCKED;
+
+        LocalDateTime startedAt = (initialStatus == RoadmapStep.StepStatus.IN_PROGRESS)
+                ? LocalDateTime.now()
+                : null;
+
         RoadmapStep step = RoadmapStep.builder()
                 .stepOrder(createDto.getStepOrder())
                 .title(createDto.getTitle())
                 .contentLink(createDto.getContentLink())
                 .requiredCommits(createDto.getRequiredCommits())
-                .status(RoadmapStep.StepStatus.LOCKED)
+                .status(initialStatus)
+                .startedAt(startedAt)
                 .roadmap(roadmap)
                 .build();
 

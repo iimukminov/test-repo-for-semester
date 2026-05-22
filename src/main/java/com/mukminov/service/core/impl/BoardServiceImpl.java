@@ -62,6 +62,11 @@ public class BoardServiceImpl implements BoardService {
         User sender = userRepository.findById(dto.getSenderId())
                 .orElseThrow(() -> new RuntimeException("Sender not found"));
 
+        boolean alreadySent = requestRepository.existsBySenderIdAndAdvertisementId(dto.getSenderId(), adId);
+        if (alreadySent) {
+            throw new RuntimeException("Вы уже отправляли отклик на эту заявку!");
+        }
+
         ConnectionRequest req = ConnectionRequest.builder()
                 .advertisement(ad)
                 .sender(sender)

@@ -5,6 +5,7 @@ import com.mukminov.api.generated.dto.RoadmapStepCreateDto;
 import com.mukminov.api.generated.dto.RoadmapStepDto;
 import com.mukminov.api.generated.dto.RoadmapStepStatusUpdateDto;
 import com.mukminov.service.core.RoadmapStepService;
+import com.mukminov.service.integration.GitHubSyncService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import java.util.List;
 public class RoadmapStepController implements RoadmapStepsApi {
 
     private final RoadmapStepService roadmapStepService;
+    private final GitHubSyncService  gitHubSyncService;
 
     @Override
     public ResponseEntity<RoadmapStepDto> addStepToRoadmap(Long roadmapId, RoadmapStepCreateDto roadmapStepCreateDto) {
@@ -43,5 +45,11 @@ public class RoadmapStepController implements RoadmapStepsApi {
     public ResponseEntity<Void> deleteStep(Long id) {
         roadmapStepService.deleteStep(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @Override
+    public ResponseEntity<RoadmapStepDto> syncStep(Long id) {
+        RoadmapStepDto step = gitHubSyncService.syncSingleStep(id);
+        return ResponseEntity.ok(roadmapStepService.getStepById(step.getId()));
     }
 }

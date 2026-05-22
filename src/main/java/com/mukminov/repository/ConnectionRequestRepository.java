@@ -13,4 +13,6 @@ public interface ConnectionRequestRepository extends JpaRepository<ConnectionReq
 
     @Query("SELECT r FROM ConnectionRequest r JOIN FETCH r.advertisement JOIN FETCH r.sender WHERE r.advertisement.author.id = :authorId ORDER BY r.createdAt DESC")
     List<ConnectionRequest> findAllByAdvertisementAuthorIdOrderByCreatedAtDesc(@Param("authorId") Long authorId);
+
+    boolean existsBySenderIdAndAdvertisementId(Long senderId, Long advertisementId);
 }

@@ -16,6 +16,11 @@ public class NetworkingUiController {
     @GetMapping("/board")
     public String getBoardPage(@AuthenticationPrincipal CustomUserDetails userDetails, Model model) {
         model.addAttribute("currentUserId", userDetails.getUser().getId());
+
+        boolean isMentor = userDetails.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().contains("MENTOR"));
+        model.addAttribute("isMentor", isMentor);
+
         return "board";
     }
 

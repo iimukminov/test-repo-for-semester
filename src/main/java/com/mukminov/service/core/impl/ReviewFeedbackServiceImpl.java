@@ -52,6 +52,9 @@ public class ReviewFeedbackServiceImpl implements ReviewFeedbackService {
                         nextStep.setStartedAt(java.time.LocalDateTime.now());
                         stepRepository.save(nextStep);
                     });
+        } else {
+            step.setStatus(RoadmapStep.StepStatus.IN_PROGRESS);
+            stepRepository.save(step);
         }
 
         return feedbackMapper.toDto(savedFeedback);

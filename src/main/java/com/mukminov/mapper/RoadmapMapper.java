@@ -1,13 +1,19 @@
 package com.mukminov.mapper;
 
 import com.mukminov.api.generated.dto.RoadmapDto;
+import com.mukminov.api.generated.dto.RoadmapStepDto;
 import com.mukminov.entity.Roadmap;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.ZoneOffset;
+import java.util.Comparator;
 
 @Component
+@RequiredArgsConstructor
 public class RoadmapMapper {
+
+    private final RoadmapStepMapper stepMapper;
 
     public RoadmapDto toDto(Roadmap entity) {
         if (entity == null) {
@@ -36,6 +42,14 @@ public class RoadmapMapper {
 
         dto.setMaxAfkDays(entity.getMaxAfkDays());
         dto.setMeetLink(entity.getMeetLink());
+
+        if (entity.getSteps() != null) {
+            dto.setSteps(entity.getSteps().stream()
+                    .map(stepMapper::toDto)
+                    .filter(step -> step != null && step.getStepOrder() != null)
+                    .sorted(Comparator.comparingInt(RoadmapStepDto::getStepOrder))
+                    .toList());
+        }
 
         return dto;
     }

@@ -49,17 +49,21 @@ public class RoadmapStep {
     @Column(name = "started_at")
     private LocalDateTime startedAt;
 
+    @Column(name = "actual_commits")
+    private Integer actualCommits = 0;
+
     public enum StepStatus {
         LOCKED, IN_PROGRESS, REVIEW, DONE
     }
 
     @Builder
-    public RoadmapStep(Integer stepOrder, String title, String contentLink, Integer requiredCommits, StepStatus status, Roadmap roadmap) {
+    public RoadmapStep(Integer stepOrder, String title, String contentLink, Integer requiredCommits, StepStatus status, Roadmap roadmap, LocalDateTime startedAt) {
         this.stepOrder = stepOrder;
         this.title = title;
         this.contentLink = contentLink;
         this.requiredCommits = requiredCommits;
         this.status = status;
         this.roadmap = roadmap;
+        this.startedAt = startedAt;
     }
 }

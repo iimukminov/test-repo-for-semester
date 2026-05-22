@@ -244,6 +244,27 @@ paths:
         '204':
           description: Step successfully deleted
 
+  /api/v1/steps/{id}/sync:
+    post:
+      tags:
+        - Roadmap Steps
+      summary: Принудительно синхронизировать шаг с GitHub
+      operationId: syncStep
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoadmapStepDto'
+
   /api/v1/steps/{id}/status:
     patch:
       tags:
@@ -607,6 +628,10 @@ components:
           type: integer
         meetLink:
           type: string
+        steps:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoadmapStepDto'
 
     RoadmapCreateDto:
       type: object
@@ -656,6 +681,8 @@ components:
         startedAt:
           type: string
           format: date-time
+        actualCommits:
+          type: integer
 
     RoadmapStepCreateDto:
       type: object

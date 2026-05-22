@@ -18,21 +18,25 @@ import java.util.Map;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(NoResourceFoundException.class)
-    public Object handleResourceNotFound(NoResourceFoundException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    public Object handleResourceNotFound(NoResourceFoundException ex, HttpServletRequest request) {
+        if (isAjax(request)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of(
+                            "error", true,
+                            "message", "Ресурс не найден"
+                    ));
+        }
+
+        ModelAndView mav = new ModelAndView("error/404");
+        mav.setStatus(HttpStatus.NOT_FOUND);
+        return mav;
     }
 
     @ExceptionHandler(Exception.class)
     public Object handleAllExceptions(Exception ex, HttpServletRequest request) {
         log.error("Unhandled exception caught: ", ex);
 
-        String requestedWith = request.getHeader("X-Requested-With");
-        String accept = request.getHeader("Accept");
-
-        boolean isAjax = "XMLHttpRequest".equals(requestedWith) ||
-                (accept != null && accept.contains("application/json"));
-
-        if (isAjax) {
+        if (isAjax(request)) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Map.of(
                             "error", true,
@@ -42,6 +46,15 @@ public class GlobalExceptionHandler {
 
         ModelAndView modelAndView = new ModelAndView("error/500");
         modelAndView.addObject("errorMessage", ex.getMessage());
+        modelAndView.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
         return modelAndView;
+    }
+
+    private boolean isAjax(HttpServletRequest request) {
+        String requestedWith = request.getHeader("X-Requested-With");
+        String accept = request.getHeader("Accept");
+
+        return "XMLHttpRequest".equals(requestedWith) ||
+                (accept != null && accept.contains("application/json"));
     }
 }

@@ -25,6 +25,7 @@ public class RoadmapStepMapper {
         dto.setTitle(entity.getTitle());
         dto.setContentLink(entity.getContentLink());
         dto.setRequiredCommits(entity.getRequiredCommits());
+        dto.setActualCommits(entity.getActualCommits() != null ? entity.getActualCommits() : 0);
         
         if (entity.getStatus() != null) {
             dto.setStatus(entity.getStatus().name());
@@ -37,6 +38,7 @@ public class RoadmapStepMapper {
         if (entity.getStartedAt() != null) {
             dto.setStartedAt(entity.getStartedAt().atOffset(ZoneOffset.UTC));
         }
+
 
         return dto;
     }
