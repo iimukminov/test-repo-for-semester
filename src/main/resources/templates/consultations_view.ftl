@@ -26,17 +26,19 @@
                     <#list consultations as c>
                         <tr>
                             <td class="ps-4 align-middle">
-                                <a href="${c.meetLink}" target="_blank" class="fw-bold text-decoration-none">
+                                <a href="${(c.getMeetLink())!""}" target="_blank" class="fw-bold text-decoration-none">
                                     <i class="bi bi-camera-video me-2"></i> Перейти в Meet
                                 </a>
                             </td>
-                            <td class="align-middle">${c.scheduledTime?datetime}</td>
                             <td class="align-middle">
-                                <span class="badge ${(c.status == 'SCHEDULED')?string('bg-primary', 'bg-secondary')}">${c.status}</span>
+                                ${c.getScheduledTime()}
+                            </td>
+                            <td class="align-middle">
+                                <span class="badge ${(c.getStatus() == 'SCHEDULED')?string('bg-primary', 'bg-secondary')}">${c.getStatus()}</span>
                             </td>
                             <td class="text-end pe-4">
-                                <#if isMentor && c.status == 'SCHEDULED'>
-                                    <button class="btn btn-sm btn-outline-danger" onclick="updateStatus(${c.id}, 'CANCELLED')">Отменить</button>
+                                <#if isMentor && c.getStatus() == 'SCHEDULED'>
+                                    <button class="btn btn-sm btn-outline-danger" onclick="updateStatus(${c.getId()}, 'CANCELLED')">Отменить</button>
                                 </#if>
                             </td>
                         </tr>
@@ -57,12 +59,21 @@
                 <form id="createConsultationForm">
                     <div class="modal-body p-4">
                         <input type="hidden" name="mentorId" value="${currentUserId}">
+
                         <div class="mb-3">
-                            <label class="form-label">Менти (ID)</label>
-                            <input type="number" class="form-control" name="menteeId" required>
+                            <label class="form-label fw-bold">Ученик (Менти)</label>
+                            <select class="form-select" name="menteeId" required>
+                                <option value="" disabled selected>Выберите ученика...</option>
+                                <#if mentees??>
+                                    <#list mentees as mentee>
+                                        <option value="${mentee.getId()}">@${mentee.getUsername()}</option>
+                                    </#list>
+                                </#if>
+                            </select>
                         </div>
+
                         <div class="mb-3">
-                            <label class="form-label">Дата и время</label>
+                            <label class="form-label fw-bold">Дата и время</label>
                             <input type="datetime-local" class="form-control" name="scheduledTime" required>
                         </div>
                     </div>
@@ -78,6 +89,11 @@
         document.getElementById('createConsultationForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const data = Object.fromEntries(new FormData(e.target));
+
+            if (data.scheduledTime) {
+                data.scheduledTime = data.scheduledTime + ":00Z";
+            }
+
             data.mentorId = parseInt(data.mentorId);
             data.menteeId = parseInt(data.menteeId);
 

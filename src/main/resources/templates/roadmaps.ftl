@@ -78,12 +78,13 @@
                                                     </#if>
                                                 </div>
                                             </div>
-                                            <#if step.reviewFeedback??>
+                                            <#assign feedback = (step.getReviewFeedback())!>
+                                            <#if feedback?has_content>
                                                 <div class="mt-2 p-2 bg-warning bg-opacity-10 border-start border-warning border-3 rounded">
                                                     <small class="fw-bold d-block mb-1">
                                                         <i class="bi bi-chat-left-text"></i> Комментарий ментора:
                                                     </small>
-                                                    <p class="mb-0 small">${step.reviewFeedback.comments!""}</p>
+                                                    <p class="mb-0 small">${(feedback.getComments())!""}</p>
                                                 </div>
                                             </#if>
                                         </#list>
