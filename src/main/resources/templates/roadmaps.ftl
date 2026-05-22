@@ -215,7 +215,7 @@
 
     <script>
         <#if isMentor>
-        // ... (скрипты создания карты и шага остаются без изменений)
+
         document.getElementById('createRoadmapForm')?.addEventListener('submit', async function(e) {
             e.preventDefault();
             const btn = document.getElementById('submitBtn');
@@ -267,7 +267,6 @@
             finally { btn.disabled = false; }
         });
 
-        // НОВЫЙ СКРИПТ ДЛЯ РЕВЬЮ:
         window.openReviewModal = function(stepId, stepTitle) {
             document.getElementById('reviewStepId').value = stepId;
             document.getElementById('reviewStepTitle').innerText = '"' + stepTitle + '"';
@@ -288,7 +287,6 @@
             };
 
             try {
-                // ПРОВЕРЬ ЭТОТ ЭНДПОИНТ: Если в ReviewFeedbackController путь другой, поменяй здесь!
                 const res = await fetch('/api/v1/steps/' + stepId + '/feedback', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },

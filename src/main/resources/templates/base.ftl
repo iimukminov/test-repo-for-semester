@@ -33,6 +33,7 @@
                         <li class="nav-item"><a class="nav-link" href="/roadmap">Мои карты</a></li>
                         <li class="nav-item"><a class="nav-link" href="/board">Биржа</a></li>
                         <li class="nav-item"><a class="nav-link" href="/notifications">Отклики</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/consultations">Встречи</a></li>
                     </ul>
                     <form action="/logout" method="post" class="d-flex m-0">
                         <input type="hidden" name="${_csrf.parameterName!}" value="${_csrf.token!}"/>

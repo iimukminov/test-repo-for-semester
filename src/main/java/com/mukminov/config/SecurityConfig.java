@@ -35,7 +35,7 @@ public class SecurityConfig {
 
                         .requestMatchers(HttpMethod.GET, "/api/v1/board/**", "/api/v1/connections/**").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/v1/board/**").authenticated()
-                        .requestMatchers(HttpMethod.PATCH, "/api/v1/connections/**").hasRole("MENTOR")
+                        .requestMatchers(HttpMethod.PATCH, "/api/v1/connections/**").authenticated()
 
                         .requestMatchers("/roadmap", "/roadmap/**", "/board", "/notifications").hasAnyRole("MENTEE", "MENTOR")
 
