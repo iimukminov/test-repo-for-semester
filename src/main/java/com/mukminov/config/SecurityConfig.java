@@ -2,6 +2,7 @@ package com.mukminov.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -25,9 +26,20 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/", "/index", "/login", "/register", "/swagger-ui/**", "/v3/api-docs/**", "/users/**").permitAll()
-                        .requestMatchers("/mentor/**").hasRole("MENTOR")
-                        .requestMatchers("/roadmap/**").hasAnyRole("MENTEE", "MENTOR")
+                        .requestMatchers("/", "/index", "/login", "/register", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+
+                        .requestMatchers(HttpMethod.POST, "/api/v1/users").permitAll()
+
+                        .requestMatchers(HttpMethod.POST, "/api/v1/roadmaps", "/api/v1/roadmaps/**", "/api/v1/steps/**").hasRole("MENTOR")
+                        .requestMatchers(HttpMethod.DELETE, "/api/v1/roadmaps/**", "/api/v1/steps/**").hasRole("MENTOR")
+                        .requestMatchers(HttpMethod.PATCH, "/api/v1/steps/**", "/api/v1/consultations/**").hasRole("MENTOR")
+
+                        .requestMatchers(HttpMethod.GET, "/api/v1/board/**", "/api/v1/connections/**").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/board/**").authenticated()
+                        .requestMatchers(HttpMethod.PATCH, "/api/v1/connections/**").hasRole("MENTOR")
+
+                        .requestMatchers("/roadmap", "/roadmap/**", "/board", "/notifications").hasAnyRole("MENTEE", "MENTOR")
+
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
