@@ -1,4 +1,4 @@
-package com.mukminov.service.impl;
+package com.mukminov.service.core.impl;
 
 import com.mukminov.api.generated.dto.RoadmapStepCreateDto;
 import com.mukminov.api.generated.dto.RoadmapStepDto;
@@ -8,14 +8,13 @@ import com.mukminov.entity.RoadmapStep;
 import com.mukminov.mapper.RoadmapStepMapper;
 import com.mukminov.repository.RoadmapRepository;
 import com.mukminov.repository.RoadmapStepRepository;
-import com.mukminov.service.RoadmapStepService;
+import com.mukminov.service.core.RoadmapStepService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

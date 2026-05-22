@@ -1,4 +1,4 @@
-package com.mukminov.service.impl;
+package com.mukminov.service.core.impl;
 
 import com.mukminov.api.generated.dto.UserCreateDto;
 import com.mukminov.api.generated.dto.UserDto;
@@ -7,14 +7,13 @@ import com.mukminov.entity.User;
 import com.mukminov.mapper.UserMapper;
 import com.mukminov.repository.RoleRepository;
 import com.mukminov.repository.UserRepository;
-import com.mukminov.service.UserService;
+import com.mukminov.service.core.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service

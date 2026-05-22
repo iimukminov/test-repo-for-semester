@@ -1,8 +1,7 @@
-package com.mukminov.service;
+package com.mukminov.service.core;
 
 import com.mukminov.api.generated.dto.RoadmapCreateDto;
 import com.mukminov.api.generated.dto.RoadmapDto;
-import com.mukminov.entity.Roadmap;
 
 import java.util.List;
 

@@ -1,9 +1,9 @@
-package com.mukminov.controller;
+package com.mukminov.controller.api;
 
 import com.mukminov.api.generated.api.RoadmapsApi;
 import com.mukminov.api.generated.dto.RoadmapCreateDto;
 import com.mukminov.api.generated.dto.RoadmapDto;
-import com.mukminov.service.RoadmapService;
+import com.mukminov.service.core.RoadmapService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

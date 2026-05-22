@@ -1,4 +1,4 @@
-package com.mukminov.service;
+package com.mukminov.service.core;
 
 import com.mukminov.api.generated.dto.ConsultationCreateDto;
 import com.mukminov.api.generated.dto.ConsultationDto;

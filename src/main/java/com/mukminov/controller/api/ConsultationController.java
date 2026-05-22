@@ -1,10 +1,10 @@
-package com.mukminov.controller;
+package com.mukminov.controller.api;
 
 import com.mukminov.api.generated.api.ConsultationsApi;
 import com.mukminov.api.generated.dto.ConsultationCreateDto;
 import com.mukminov.api.generated.dto.ConsultationDto;
 import com.mukminov.api.generated.dto.ConsultationUpdateDto;
-import com.mukminov.service.ConsultationService;
+import com.mukminov.service.core.ConsultationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

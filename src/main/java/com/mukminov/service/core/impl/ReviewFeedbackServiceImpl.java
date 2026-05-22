@@ -1,4 +1,4 @@
-package com.mukminov.service.impl;
+package com.mukminov.service.core.impl;
 
 import com.mukminov.api.generated.dto.ReviewFeedbackCreateDto;
 import com.mukminov.api.generated.dto.ReviewFeedbackDto;
@@ -9,7 +9,7 @@ import com.mukminov.mapper.ReviewFeedbackMapper;
 import com.mukminov.repository.ReviewFeedbackRepository;
 import com.mukminov.repository.RoadmapStepRepository;
 import com.mukminov.repository.UserRepository;
-import com.mukminov.service.ReviewFeedbackService;
+import com.mukminov.service.core.ReviewFeedbackService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

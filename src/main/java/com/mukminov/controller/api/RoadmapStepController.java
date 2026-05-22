@@ -1,10 +1,10 @@
-package com.mukminov.controller;
+package com.mukminov.controller.api;
 
 import com.mukminov.api.generated.api.RoadmapStepsApi;
 import com.mukminov.api.generated.dto.RoadmapStepCreateDto;
 import com.mukminov.api.generated.dto.RoadmapStepDto;
 import com.mukminov.api.generated.dto.RoadmapStepStatusUpdateDto;
-import com.mukminov.service.RoadmapStepService;
+import com.mukminov.service.core.RoadmapStepService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

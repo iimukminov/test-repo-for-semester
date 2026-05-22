@@ -1,9 +1,9 @@
-package com.mukminov.controller;
+package com.mukminov.controller.api;
 
 import com.mukminov.api.generated.api.ReviewFeedbackApi;
 import com.mukminov.api.generated.dto.ReviewFeedbackCreateDto;
 import com.mukminov.api.generated.dto.ReviewFeedbackDto;
-import com.mukminov.service.ReviewFeedbackService;
+import com.mukminov.service.core.ReviewFeedbackService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package com.mukminov.service;
+package com.mukminov.service.integration;
 
 public interface GitHubSyncService {
     void syncActiveSteps();

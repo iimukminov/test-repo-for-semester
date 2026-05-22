@@ -1,9 +1,9 @@
-package com.mukminov.controller;
+package com.mukminov.controller.api;
 
 import com.mukminov.api.generated.api.UsersApi;
 import com.mukminov.api.generated.dto.UserCreateDto;
 import com.mukminov.api.generated.dto.UserDto;
-import com.mukminov.service.UserService;
+import com.mukminov.service.core.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

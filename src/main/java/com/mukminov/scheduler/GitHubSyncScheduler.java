@@ -1,6 +1,6 @@
 package com.mukminov.scheduler;
 
-import com.mukminov.service.GitHubSyncService;
+import com.mukminov.service.integration.GitHubSyncService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;

@@ -1,4 +1,4 @@
-package com.mukminov.service.impl;
+package com.mukminov.service.core.impl;
 
 import com.mukminov.api.generated.dto.RoadmapCreateDto;
 import com.mukminov.api.generated.dto.RoadmapDto;
@@ -7,7 +7,7 @@ import com.mukminov.entity.User;
 import com.mukminov.mapper.RoadmapMapper;
 import com.mukminov.repository.RoadmapRepository;
 import com.mukminov.repository.UserRepository;
-import com.mukminov.service.RoadmapService;
+import com.mukminov.service.core.RoadmapService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

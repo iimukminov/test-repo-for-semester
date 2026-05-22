@@ -1,4 +1,4 @@
-package com.mukminov.controller;
+package com.mukminov.controller.ui;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

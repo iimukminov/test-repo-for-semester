@@ -1,4 +1,4 @@
-package com.mukminov.service.impl;
+package com.mukminov.service.core.impl;
 
 import com.mukminov.api.generated.dto.ConsultationCreateDto;
 import com.mukminov.api.generated.dto.ConsultationDto;
@@ -8,7 +8,7 @@ import com.mukminov.entity.User;
 import com.mukminov.mapper.ConsultationMapper;
 import com.mukminov.repository.ConsultationRepository;
 import com.mukminov.repository.UserRepository;
-import com.mukminov.service.ConsultationService;
+import com.mukminov.service.core.ConsultationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

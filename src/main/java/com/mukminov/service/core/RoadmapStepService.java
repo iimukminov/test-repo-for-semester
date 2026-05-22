@@ -1,9 +1,8 @@
-package com.mukminov.service;
+package com.mukminov.service.core;
 
 import com.mukminov.api.generated.dto.RoadmapStepCreateDto;
 import com.mukminov.api.generated.dto.RoadmapStepDto;
 import com.mukminov.api.generated.dto.RoadmapStepStatusUpdateDto;
-import com.mukminov.entity.RoadmapStep;
 
 import java.util.List;
 

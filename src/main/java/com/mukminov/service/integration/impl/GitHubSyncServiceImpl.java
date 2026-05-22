@@ -1,14 +1,13 @@
-package com.mukminov.service.impl;
+package com.mukminov.service.integration.impl;
 
 import com.mukminov.client.GitHubClient;
 import com.mukminov.entity.RoadmapStep;
 import com.mukminov.repository.RoadmapStepRepository;
-import com.mukminov.service.GitHubSyncService;
+import com.mukminov.service.integration.GitHubSyncService;
 import com.mukminov.util.GitHubUrlParser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
