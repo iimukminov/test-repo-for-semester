@@ -47,11 +47,19 @@ public class Roadmap {
     @OneToMany(mappedBy = "roadmap", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RoadmapStep> steps = new ArrayList<>();
 
+    @Column(name = "max_afk_days")
+    private Integer maxAfkDays;
+
+    @Column(name = "meet_link")
+    private String meetLink;
+
     @Builder
-    public Roadmap(String title, String description, User mentor, User mentee) {
+    public Roadmap(String title, String description, User mentor, User mentee, Integer maxAfkDays, String meetLink) {
         this.title = title;
         this.description = description;
         this.mentor = mentor;
         this.mentee = mentee;
+        this.maxAfkDays = maxAfkDays;
+        this.meetLink = meetLink;
     }
 }

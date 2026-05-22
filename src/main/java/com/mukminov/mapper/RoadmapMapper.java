@@ -34,6 +34,9 @@ public class RoadmapMapper {
             dto.setMenteeUsername(entity.getMentee().getUsername());
         }
 
+        dto.setMaxAfkDays(entity.getMaxAfkDays());
+        dto.setMeetLink(entity.getMeetLink());
+
         return dto;
     }
 }

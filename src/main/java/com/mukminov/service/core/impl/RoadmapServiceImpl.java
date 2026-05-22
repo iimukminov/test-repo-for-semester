@@ -34,6 +34,8 @@ public class RoadmapServiceImpl implements RoadmapService {
         Roadmap roadmap = Roadmap.builder()
                 .title(createDto.getTitle())
                 .description(createDto.getDescription())
+                .maxAfkDays(createDto.getMaxAfkDays() != null ? createDto.getMaxAfkDays() : 5)
+                .meetLink(createDto.getMeetLink())
                 .mentor(mentor)
                 .mentee(mentee)
                 .build();

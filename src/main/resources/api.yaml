@@ -485,6 +485,10 @@ components:
           format: int64
         menteeUsername:
           type: string
+        maxAfkDays:
+          type: integer
+        meetLink:
+          type: string
 
     RoadmapCreateDto:
       type: object
@@ -502,6 +506,10 @@ components:
         title:
           type: string
         description:
+          type: string
+        maxAfkDays:
+          type: integer
+        meetLink:
           type: string
 
     RoadmapStepDto:
