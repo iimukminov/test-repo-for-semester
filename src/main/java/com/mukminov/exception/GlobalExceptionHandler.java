@@ -1,5 +1,6 @@
 package com.mukminov.exception;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.Map;
 
 @Slf4j
+@Hidden
 @ControllerAdvice
 public class GlobalExceptionHandler {
 

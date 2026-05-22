@@ -14,10 +14,10 @@ public class PageController {
 
     @GetMapping("/")
     public String index() {
-        return "redirect:/roadmaps-ui";
+        return "redirect:/roadmap";
     }
 
-    @GetMapping("/roadmaps-ui")
+    @GetMapping("/roadmap")
     public String getRoadmapsPage(Model model) {
         model.addAttribute("roadmaps", roadmapService.getRoadmaps(null, null));
         return "roadmaps";
