@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface RoadmapRepository extends JpaRepository<Roadmap, Long> {
+public interface RoadmapRepository extends JpaRepository<Roadmap, Long>, RoadmapRepositoryCustom {
     List<Roadmap> findAllByMenteeId(Long menteeId);
     List<Roadmap> findAllByMentorId(Long mentorId);
 }
