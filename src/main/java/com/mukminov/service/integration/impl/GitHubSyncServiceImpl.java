@@ -1,7 +1,9 @@
 package com.mukminov.service.integration.impl;
 
 import com.mukminov.client.GitHubClient;
+import com.mukminov.entity.Consultation;
 import com.mukminov.entity.RoadmapStep;
+import com.mukminov.repository.ConsultationRepository;
 import com.mukminov.repository.RoadmapStepRepository;
 import com.mukminov.service.integration.GitHubSyncService;
 import com.mukminov.util.GitHubUrlParser;
@@ -9,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -19,11 +22,12 @@ import java.util.List;
 public class GitHubSyncServiceImpl implements GitHubSyncService {
 
     private final RoadmapStepRepository stepRepository;
+    private final ConsultationRepository consultationRepository;
     private final GitHubClient gitHubClient;
 
     @Override
     public void syncActiveSteps() {
-        List<RoadmapStep> activeSteps = stepRepository.findAllByStatus(RoadmapStep.StepStatus.IN_PROGRESS);
+        List<RoadmapStep> activeSteps = stepRepository.findAllByStatusWithMentee(RoadmapStep.StepStatus.IN_PROGRESS);
         
         if (activeSteps.isEmpty()) {
             log.debug("No active roadmap steps found for GitHub sync.");
@@ -41,25 +45,17 @@ public class GitHubSyncServiceImpl implements GitHubSyncService {
         String repoUrl = step.getContentLink();
         String githubUsername = step.getRoadmap().getMentee().getGithubUsername();
 
-        if (githubUsername == null || githubUsername.isEmpty()) {
-            log.debug("Step ID {} skipped: Mentee has no GitHub username linked.", step.getId());
-            return;
-        }
-
-        if (step.getStartedAt() == null) {
-            log.warn("Step ID {} skipped: IN_PROGRESS but missing 'startedAt' timestamp.", step.getId());
+        if (githubUsername == null || githubUsername.isEmpty() || step.getStartedAt() == null) {
             return;
         }
 
         String[] ownerAndRepo = GitHubUrlParser.extractOwnerAndRepo(repoUrl);
-        if (ownerAndRepo == null) {
-            log.warn("Step ID {} skipped: Invalid GitHub URL '{}'.", step.getId(), repoUrl);
-            return;
-        }
+        if (ownerAndRepo == null) return;
 
         String owner = ownerAndRepo[0];
         String repo = ownerAndRepo[1];
-        String sinceIso = step.getStartedAt().atOffset(ZoneOffset.UTC).format(DateTimeFormatter.ISO_INSTANT);
+        String sinceIso = step.getStartedAt().atOffset(ZoneOffset.UTC)
+                .format(DateTimeFormatter.ISO_INSTANT);
 
         int actualCommits = gitHubClient.getCommitsCount(owner, repo, githubUsername, sinceIso);
 
@@ -69,6 +65,30 @@ public class GitHubSyncServiceImpl implements GitHubSyncService {
             log.info("Step ID: {} completed required commits. Moving to REVIEW.", step.getId());
             step.setStatus(RoadmapStep.StepStatus.REVIEW);
             stepRepository.save(step);
+        } else {
+            int maxAfkDays = step.getRoadmap().getMaxAfkDays() != null ? step.getRoadmap().getMaxAfkDays() : 5;
+            String meetLink = step.getRoadmap().getMeetLink() != null ? step.getRoadmap().getMeetLink() : "https://meet.google.com/new";
+
+            if (step.getStartedAt().plusDays(maxAfkDays).isBefore(LocalDateTime.now())) {
+                Long menteeId = step.getRoadmap().getMentee().getId();
+
+                boolean hasActiveConsultation = consultationRepository.existsByMenteeIdAndStatus(
+                        menteeId, Consultation.ConsultationStatus.SCHEDULED);
+
+                if (!hasActiveConsultation) {
+                    log.warn("Mentee {} is slacking ({} days). Auto-scheduling intervention!", githubUsername, maxAfkDays);
+
+                    Consultation intervention = Consultation.builder()
+                            .mentor(step.getRoadmap().getMentor())
+                            .mentee(step.getRoadmap().getMentee())
+                            .scheduledTime(LocalDateTime.now().plusDays(1))
+                            .meetLink(meetLink)
+                            .status(Consultation.ConsultationStatus.SCHEDULED)
+                            .build();
+
+                    consultationRepository.save(intervention);
+                }
+            }
         }
     }
 }

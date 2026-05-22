@@ -45,6 +45,13 @@ public class ReviewFeedbackServiceImpl implements ReviewFeedbackService {
         if (Boolean.TRUE.equals(createDto.getIsApproved())) {
             step.setStatus(RoadmapStep.StepStatus.DONE);
             stepRepository.save(step);
+
+            stepRepository.findByRoadmapIdAndStepOrder(step.getRoadmap().getId(), step.getStepOrder() + 1)
+                    .ifPresent(nextStep -> {
+                        nextStep.setStatus(RoadmapStep.StepStatus.IN_PROGRESS);
+                        nextStep.setStartedAt(java.time.LocalDateTime.now());
+                        stepRepository.save(nextStep);
+                    });
         }
 
         return feedbackMapper.toDto(savedFeedback);
