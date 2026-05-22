@@ -83,7 +83,7 @@
                                                     <small class="fw-bold d-block mb-1">
                                                         <i class="bi bi-chat-left-text"></i> Комментарий ментора:
                                                     </small>
-                                                    <p class="mb-0 small">${step.reviewFeedback.comments}</p>
+                                                    <p class="mb-0 small">${step.reviewFeedback.comments!""}</p>
                                                 </div>
                                             </#if>
                                         </#list>
