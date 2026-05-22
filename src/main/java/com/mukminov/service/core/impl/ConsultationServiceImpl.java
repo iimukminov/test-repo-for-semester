@@ -67,7 +67,7 @@ public class ConsultationServiceImpl implements ConsultationService {
 
         return consultations.stream()
                 .map(consultationMapper::toDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override

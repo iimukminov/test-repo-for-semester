@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.Map;
 
@@ -15,6 +16,11 @@ import java.util.Map;
 @Hidden
 @ControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(NoResourceFoundException.class)
+    public Object handleResourceNotFound(NoResourceFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
 
     @ExceptionHandler(Exception.class)
     public Object handleAllExceptions(Exception ex, HttpServletRequest request) {
@@ -30,7 +36,7 @@ public class GlobalExceptionHandler {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Map.of(
                             "error", true,
-                            "message", ex.getMessage() != null ? ex.getMessage() : "Произошла внутренняя ошибка сервера"
+                            "message", "Произошла внутренняя ошибка сервера. Попробуйте повторить позже"
                     ));
         }
 

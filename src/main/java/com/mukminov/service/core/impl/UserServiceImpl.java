@@ -5,6 +5,7 @@ import com.mukminov.api.generated.dto.UserDto;
 import com.mukminov.entity.Role;
 import com.mukminov.entity.User;
 import com.mukminov.mapper.UserMapper;
+import com.mukminov.model.enums.RoleType;
 import com.mukminov.repository.RoleRepository;
 import com.mukminov.repository.UserRepository;
 import com.mukminov.service.core.UserService;
@@ -30,7 +31,7 @@ public class UserServiceImpl implements UserService {
     public List<UserDto> getAllUsers() {
         return userRepository.findAll().stream()
                 .map(userMapper::toDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
@@ -44,8 +45,8 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserDto createUser(UserCreateDto createDto) {
-        Role menteeRole = roleRepository.findByName("ROLE_MENTEE")
-                .orElseGet(() -> roleRepository.save(Role.builder().name("ROLE_MENTEE").build()));
+        Role menteeRole = roleRepository.findByName(RoleType.ROLE_MENTEE.name())
+                .orElseGet(() -> roleRepository.save(Role.builder().name(RoleType.ROLE_MENTEE.name()).build()));
 
         User user = User.builder()
                 .username(createDto.getUsername())
@@ -64,5 +65,12 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public List<UserDto> getMentees(Long mentorId) {
+        return userRepository.findAllMenteesByMentorId(mentorId).stream()
+                .map(userMapper::toDto)
+                .toList();
     }
 }
