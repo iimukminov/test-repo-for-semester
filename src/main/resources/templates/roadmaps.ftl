@@ -78,6 +78,14 @@
                                                     </#if>
                                                 </div>
                                             </div>
+                                            <#if step.reviewFeedback??>
+                                                <div class="mt-2 p-2 bg-warning bg-opacity-10 border-start border-warning border-3 rounded">
+                                                    <small class="fw-bold d-block mb-1">
+                                                        <i class="bi bi-chat-left-text"></i> Комментарий ментора:
+                                                    </small>
+                                                    <p class="mb-0 small">${step.reviewFeedback.comments}</p>
+                                                </div>
+                                            </#if>
                                         </#list>
                                     <#else>
                                         <div class="text-muted small text-center py-2">Шагов пока нет</div>
@@ -258,7 +266,7 @@
             try {
                 const res = await fetch('/api/v1/roadmaps/' + roadmapId + '/steps', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', [csrfHeader]: csrfToken },
                     body: JSON.stringify(data)
                 });
                 if (res.ok) { window.showToast('Шаг добавлен!', 'success'); setTimeout(() => window.location.reload(), 1000); }

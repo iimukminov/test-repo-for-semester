@@ -29,6 +29,6 @@ public class ConsultationUiController {
                 !isMentor ? userId : null
         ));
         
-        return "consultations";
+        return "consultations_view";
     }
 }

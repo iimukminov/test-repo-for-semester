@@ -1,5 +1,6 @@
 package com.mukminov.mapper;
 
+import com.mukminov.api.generated.dto.ReviewFeedbackDto;
 import com.mukminov.api.generated.dto.RoadmapStepDto;
 import com.mukminov.entity.RoadmapStep;
 import org.springframework.stereotype.Component;
@@ -37,6 +38,13 @@ public class RoadmapStepMapper {
 
         if (entity.getStartedAt() != null) {
             dto.setStartedAt(entity.getStartedAt().atOffset(ZoneOffset.UTC));
+        }
+
+        if (entity.getReviewFeedback() != null) {
+            ReviewFeedbackDto feedbackDto = new ReviewFeedbackDto();
+            feedbackDto.setComments(entity.getReviewFeedback().getComments());
+            feedbackDto.setIsApproved(entity.getReviewFeedback().getIsApproved());
+            dto.setReviewFeedback(feedbackDto);
         }
 
 

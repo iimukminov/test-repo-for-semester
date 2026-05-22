@@ -32,7 +32,7 @@
                             </td>
                             <td class="align-middle">${c.scheduledTime?datetime}</td>
                             <td class="align-middle">
-                                <span class="badge ${c.status == 'SCHEDULED' ? 'bg-primary' : 'bg-secondary'}">${c.status}</span>
+                                <span class="badge ${(c.status == 'SCHEDULED')?string('bg-primary', 'bg-secondary')}">${c.status}</span>
                             </td>
                             <td class="text-end pe-4">
                                 <#if isMentor && c.status == 'SCHEDULED'>
